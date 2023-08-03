@@ -453,12 +453,10 @@ void read_settings_xml(pugi::xml_node root)
       auto path = get_node_value(node, "file", false, true);
       if (ends_with(path, ".mcpl") || ends_with(path, ".mcpl.gz")) {
         auto sites = mcpl_source_sites(path);
+        source_file = true;
         model::external_sources.push_back(make_unique<FileSource>(sites));
       }else {
         model::external_sources.push_back(make_unique<FileSource>(path));
-      }
-      if (ends_with(path, ".mcpl") || ends_with(path, ".mcpl.gz")||ends_with(path, ".h5") || ends_with(path, ".h5.gz")){
-        source_file = true;
       }
     } else if (check_for_node(node, "library")) {
       // Get shared library path and parameters
