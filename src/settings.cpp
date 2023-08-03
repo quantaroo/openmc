@@ -129,8 +129,8 @@ int verbosity {7};
 double weight_cutoff {0.25};
 double weight_survive {1.0};
 
-double weight_cutoff_fixed;
-double weight_survive_fixed;
+double weight_cutoff_fixed{0.25};
+double weight_survive_fixed{1.0};
 
 
 } // namespace settings
@@ -519,14 +519,16 @@ void read_settings_xml(pugi::xml_node root)
     xml_node node_cutoff = root.child("cutoff");
     if (check_for_node(node_cutoff, "weight")) {
       weight_cutoff = std::stod(get_node_value(node_cutoff, "weight"));
-      weight_cutoff_fixed = weight_cutoff;
     }
     if (check_for_node(node_cutoff, "weight_avg")) {
       weight_survive = std::stod(get_node_value(node_cutoff, "weight_avg"));
-      weight_survive_fixed = weight_survive;
     }
     if(check_for_node(node_cutoff, "survival_normalization")){ 
       survival_normalization = get_node_value_bool(node_cutoff, "survival_normalization");
+      if(survival_normalization && survival_biasing){
+        weight_cutoff_fixed = weight_cutoff;
+        weight_survive_fixed = weight_survive;
+      }
     }
     
     if (check_for_node(node_cutoff, "energy_neutron")) {
