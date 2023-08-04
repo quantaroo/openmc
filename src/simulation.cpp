@@ -579,15 +579,7 @@ void initialize_history(Particle& p, int64_t index_source)
   simulation::total_weight += p.wgt();
 
 //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
-  if(settings::source_file || settings::surf_source_read){
-    if(settings::survival_normalization && settings::survival_biasing){
-      settings::weight_cutoff = settings::weight_cutoff_fixed * p.wgt();
-      settings::weight_survive = settings::weight_survive_fixed * p.wgt();
-      std::cout<<"Weight Cutoff: " << settings::weight_cutoff<<std::endl;
-      std::cout<<" Weight Survive: " << settings::weight_survive<<std::endl;
-      //std::cout<<" Current Weight: " << p.wgt()<<std::endl;
-    }
-  }
+  
   
   // Force calculation of cross-sections by setting last energy to zero
   if (settings::run_CE) {
@@ -598,7 +590,15 @@ void initialize_history(Particle& p, int64_t index_source)
   if (p.write_track())
     add_particle_track(p);
 }
-
+if(settings::source_file || settings::surf_source_read){
+  if(settings::survival_normalization && settings::survival_biasing){
+    settings::weight_cutoff = settings::weight_cutoff_fixed * p.wgt();
+    settings::weight_survive = settings::weight_survive_fixed * p.wgt();
+    std::cout<<"Weight Cutoff: " << settings::weight_cutoff<<std::endl;
+    std::cout<<" Weight Survive: " << settings::weight_survive<<std::endl;
+    std::cout<<" Current Weight: " << p.wgt()<<std::endl;
+  }
+}
 int overall_generation()
 {
   using namespace simulation;
