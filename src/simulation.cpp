@@ -519,16 +519,6 @@ void finalize_generation()
 
 void initialize_history(Particle& p, int64_t index_source)
 {
-  //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
-  if(settings::source_file || settings::surf_source_read){
-    if(settings::survival_normalization && settings::survival_biasing){
-      settings::weight_cutoff = settings::weight_cutoff_fixed * p.wgt();
-      settings::weight_survive = settings::weight_survive_fixed * p.wgt();
-      std::cout<<"Weight Cutoff: " << settings::weight_cutoff<<std::endl;
-      std::cout<<" Weight Survive: " << settings::weight_survive<<std::endl;
-      std::cout<<" Current Weight: " << p.wgt()<<std::endl;
-    }
-  }
   // set defaults
   if (settings::run_mode == RunMode::EIGENVALUE) {
     // set defaults for eigenvalue simulations from primary bank
@@ -587,6 +577,15 @@ void initialize_history(Particle& p, int64_t index_source)
 // Add paricle's starting weight to count for normalizing tallies later
 #pragma omp atomic
   simulation::total_weight += p.wgt();
+
+//Toggle to adjust weight cutoff and weight survive by multiplying the current weight
+  if(settings::source_file || settings::surf_source_read){
+    if(settings::survival_normalization && settings::survival_biasing){
+      settings::weight_cutoff = settings::weight_cutoff_fixed * p.wgt();
+      settings::weight_survive = settings::weight_survive_fixed * p.wgt();
+      std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << p.wgt() << std::endl;
+    }
+  }
   
   // Force calculation of cross-sections by setting last energy to zero
   if (settings::run_CE) {
