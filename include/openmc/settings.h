@@ -134,6 +134,7 @@ extern double weight_cutoff;       //!< Weight cutoff for Russian roulette
 extern double weight_survive;      //!< Survival weight after Russian roulette
 extern double weight_cutoff_fixed;
 extern double weight_survive_fixed;
+extern std::mutex cout_mutex;
 } // namespace settings
 
 //==============================================================================

@@ -523,14 +523,6 @@ void initialize_history(Particle& p, int64_t index_source)
   if (settings::run_mode == RunMode::EIGENVALUE) {
     // set defaults for eigenvalue simulations from primary bank
     p.from_source(&simulation::source_bank[index_source - 1]);
-    //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
-    if(settings::source_file || settings::surf_source_read){
-      if(settings::survival_normalization && settings::survival_biasing && settings::weight_cutoff!=NULL&& settings::weight_survive!=NULL&&p.wgt()!=NULL){
-        settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
-        settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
-        std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << p.wgt() << "\n";
-      }
-    }
   } else if (settings::run_mode == RunMode::FIXED_SOURCE) {
     // initialize random number seed
     int64_t id = (simulation::total_gen + overall_generation() - 1) *
@@ -541,7 +533,6 @@ void initialize_history(Particle& p, int64_t index_source)
     auto site = sample_external_source(&seed);
     p.from_source(&site);
   }
-
   p.current_work() = index_source;
 
   // set identifier for particle
@@ -586,6 +577,18 @@ void initialize_history(Particle& p, int64_t index_source)
 // Add paricle's starting weight to count for normalizing tallies later
 #pragma omp atomic
   simulation::total_weight += p.wgt();
+
+//Toggle to adjust weight cutoff and weight survive by multiplying the current weight
+  if(settings::source_file || settings::surf_source_read){
+    if(settings::survival_normalization && settings::survival_biasing && settings::weight_cutoff!=NULL&& settings::weight_survive!=NULL&&p.wgt()!=NULL){
+        settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
+        settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
+      {
+        std::lock_gourd<std::mutex> lock(cout_mutex);
+        std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << p.wgt() << "\n";
+      }
+    }
+  }
   
   // Force calculation of cross-sections by setting last energy to zero
   if (settings::run_CE) {
