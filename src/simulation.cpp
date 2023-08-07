@@ -532,15 +532,16 @@ void initialize_history(Particle& p, int64_t index_source)
     // sample from external source distribution or custom library then set
     auto site = sample_external_source(&seed);
     p.from_source(&site);
-  }
-  //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
-  if(settings::source_file || settings::surf_source_read){
-    if(settings::survival_normalization && settings::survival_biasing && settings::weight_cutoff!=NULL&& settings::weight_survive!=NULL&&p.wgt()!=NULL){
-      settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
-      settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
-      std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << p.wgt() << "\n";
+    //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
+    if(settings::source_file || settings::surf_source_read){
+      if(settings::survival_normalization && settings::survival_biasing && settings::weight_cutoff!=NULL&& settings::weight_survive!=NULL&&p.wgt()!=NULL){
+        settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
+        settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
+        std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << p.wgt() << "\n";
+      }
     }
   }
+
   p.current_work() = index_source;
 
   // set identifier for particle
