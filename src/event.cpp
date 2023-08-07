@@ -1,6 +1,7 @@
 #include "openmc/event.h"
 #include "openmc/material.h"
 #include "openmc/simulation.h"
+#include "openmc/settings.h"
 #include "openmc/timer.h"
 
 namespace openmc {
