@@ -66,13 +66,11 @@ void process_init_events(int64_t n_particles, int64_t source_offset)
   for (int64_t i = 0; i < n_particles; i++) {
     initialize_history(simulation::particles[i], source_offset + i + 1);
     //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
-    if(settings::source_file || settings::surf_source_read){
-      if(settings::survival_normalization && settings::survival_biasing){
-        settings::weight_cutoff = settings::weight_cutoff_fixed * (double) simulation::particles[i].wgt();
-        settings::weight_survive = settings::weight_survive_fixed * (double) simulation::particles[i].wgt();
-        std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << simulation::particles[i].wgt() << "\n";
-      }
-    }
+
+    settings::weight_cutoff = settings::weight_cutoff_fixed * (double) simulation::particles[i].wgt();
+    settings::weight_survive = settings::weight_survive_fixed * (double) simulation::particles[i].wgt();
+    std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << simulation::particles[i].wgt() << "\n";
+
     dispatch_xs_event(i);
   }
   simulation::time_event_init.stop();
