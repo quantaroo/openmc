@@ -1,7 +1,6 @@
 #include "openmc/event.h"
 #include "openmc/material.h"
 #include "openmc/simulation.h"
-#include "openmc/settings.h"
 #include "openmc/timer.h"
 
 namespace openmc {
@@ -65,12 +64,6 @@ void process_init_events(int64_t n_particles, int64_t source_offset)
 #pragma omp parallel for schedule(runtime)
   for (int64_t i = 0; i < n_particles; i++) {
     initialize_history(simulation::particles[i], source_offset + i + 1);
-    //Toggle to adjust weight cutoff and weight survive by multiplying the current weight
-
-    settings::weight_cutoff = settings::weight_cutoff_fixed * (double) simulation::particles[i].wgt();
-    settings::weight_survive = settings::weight_survive_fixed * (double) simulation::particles[i].wgt();
-    std::cout<<"Weight Cutoff: " << settings::weight_cutoff << " Weight Survive: " << settings::weight_survive << " Current Weight: " << simulation::particles[i].wgt() << "\n";
-
     dispatch_xs_event(i);
   }
   simulation::time_event_init.stop();
