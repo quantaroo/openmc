@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string>
 #include <unordered_set>
+#include <mutex>
 
 #include "pugixml.hpp"
 

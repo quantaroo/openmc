@@ -3,7 +3,7 @@
 #include <cmath>  // for ceil, pow
 #include <limits> // for numeric_limits
 #include <string>
-
+#include <mutex>
 #include <fmt/core.h>
 #ifdef _OPENMP
 #include <omp.h>

@@ -33,6 +33,7 @@
 
 #ifdef OPENMC_MPI
 #include <mpi.h>
+#include <mutex>
 #endif
 
 #include <fmt/format.h>
