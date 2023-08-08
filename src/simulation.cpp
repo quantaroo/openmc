@@ -539,7 +539,7 @@ void initialize_history(Particle& p, int64_t index_source)
         {
           std::lock_guard<std::mutex> lock(settings::cout_mutex);
           settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
-          //settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
+          settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
           std::cout<<"Weight Cutoff: " << settings::weight_cutoff 
                    << " Weight Survive: " << settings::weight_survive 
                    << " Current Weight: " << p.wgt() << "\n";
