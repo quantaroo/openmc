@@ -4,7 +4,6 @@
 
 #include "xtensor/xarray.hpp"
 #include <fmt/core.h>
-#include <mutex>
 
 #include "openmc/bank.h"
 #include "openmc/constants.h"
@@ -65,11 +64,8 @@ void sample_reaction(Particle& p)
 
   // Play Russian roulette if survival biasing is turned on
   if (settings::survival_biasing) {
-    {
-      std::lock_guard<std::mutex> lock(settings::cout_mutex);
-      if (p.wgt() < settings::weight_cutoff) {
-        russian_roulette(p, settings::weight_survive);
-      }
+    if (p.wgt() < settings::weight_cutoff) {
+      russian_roulette(p, settings::weight_survive);
     }
   }
 }
