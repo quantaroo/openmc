@@ -27,7 +27,6 @@
 #include "openmc/weight_windows.h"
 
 #include <fmt/core.h>
-#include <mutex>
 
 #include <algorithm> // for max, min, max_element
 #include <cmath>     // for sqrt, exp, log, abs, copysign
@@ -157,12 +156,13 @@ void sample_neutron_reaction(Particle& p)
   }
 
   // Play russian roulette if survival biasing is turned on
-  {
-    std::lock_guard<std::mutex> lock(settings::cout_mutex);
-    if (settings::survival_biasing) {
-      if (p.wgt() < settings::weight_cutoff) {
-        russian_roulette(p, settings::weight_survive);
-      }
+  double weight_cutoff = settings::weight_cutoff;
+  if (settings::survival_biasing) {
+    if((settings::source_file || settings::surf_source_read)&&(settings::survival_normalization)){
+      weight_cutoff  = p.wgt_cutoff();
+    }
+    if (p.wgt() < weight_cutoff) {
+      russian_roulette(p, settings::weight_survive);
     }
   }
 }
