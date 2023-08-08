@@ -4,6 +4,7 @@
 
 #include "xtensor/xarray.hpp"
 #include <fmt/core.h>
+#include <mutex>
 
 #include "openmc/bank.h"
 #include "openmc/constants.h"
