@@ -537,15 +537,12 @@ void initialize_history(Particle& p, int64_t index_source)
     if(settings::source_file || settings::surf_source_read){
       if(settings::survival_normalization && settings::survival_biasing && settings::weight_cutoff!=NULL&& settings::weight_survive!=NULL&&p.wgt()!=NULL){
         {
-          // std::lock_guard<std::mutex> lock(settings::cout_mutex);
-          std::cout<<"1 Weight Cutoff: " << settings::weight_cutoff 
-                   << " 1 Weight Survive: " << settings::weight_survive 
-                   << " 1 Current Weight: " << p.wgt() << "\n";
-          settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
+          std::lock_guard<std::mutex> lock(settings::cout_mutex);
+          //settings::weight_cutoff = settings::weight_cutoff_fixed * (double) p.wgt();
           settings::weight_survive = settings::weight_survive_fixed * (double) p.wgt();
-          std::cout<<"2 Weight Cutoff: " << settings::weight_cutoff 
-                   << " 2 Weight Survive: " << settings::weight_survive 
-                   << " 2 Current Weight: " << p.wgt() << "\n";
+          std::cout<<"Weight Cutoff: " << settings::weight_cutoff 
+                   << " Weight Survive: " << settings::weight_survive 
+                   << " Current Weight: " << p.wgt() << "\n";
         }
       }
     }
