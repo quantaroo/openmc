@@ -519,10 +519,6 @@ void read_settings_xml(pugi::xml_node root)
     }
     if(check_for_node(node_cutoff, "survival_normalization")){ 
       survival_normalization = get_node_value_bool(node_cutoff, "survival_normalization");
-      if(survival_normalization && survival_biasing){
-        weight_cutoff_fixed = weight_cutoff;
-        weight_survive_fixed = weight_survive;
-      }
     }
     if (check_for_node(node_cutoff, "energy_neutron")) {
       energy_cutoff[0] =
