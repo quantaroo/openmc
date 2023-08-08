@@ -2,7 +2,6 @@
 
 #include "openmc/random_lcg.h"
 #include "openmc/settings.h"
-#include <mutex>
 namespace openmc {
 
 //==============================================================================
@@ -11,7 +10,6 @@ namespace openmc {
 
 void russian_roulette(Particle& p, double weight_survive)
 {
-  std::lock_guard<std::mutex> lock(settings::cout_mutex);
   if (weight_survive * prn(p.current_seed()) < p.wgt()) {
     p.wgt() = weight_survive;
   } else {
