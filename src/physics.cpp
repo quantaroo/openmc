@@ -156,8 +156,8 @@ void sample_neutron_reaction(Particle& p)
   }
 
   // Play russian roulette if survival biasing is turned on
-  double weight_cutoff = settings::weight_cutoff;
   if (settings::survival_biasing) {
+    double weight_cutoff = settings::weight_cutoff;
     if((settings::source_file || settings::surf_source_read)&&(settings::survival_normalization)){
       weight_cutoff  = p.wgt_cutoff();
     }
